@@ -4,20 +4,19 @@ import axiosStatic, {
   CancelTokenSource,
 } from 'axios'
 
-type HttpMethod = 'get' | 'put' | 'post' | 'delete'
-
 interface RequestConfig<UriParams, QueryParams> {
   params?: UriParams
   query?: QueryParams
   data?: any
-  cancelPreviousCall?: boolean
 }
 
-export function buildUri(str: string, params: Record<string, any> = {}) {
+function buildUri(str: string, params: Record<string, any> = {}) {
   return str.replace(/\/\{([^/]+?)\}/g, (match: string, key: string) =>
     params[key] ? `/${params[key]}` : '',
   )
 }
+
+export const isCancel = axiosStatic.isCancel
 
 export abstract class ApiClient<
   UriParams extends Record<string, any> = never,
@@ -45,12 +44,12 @@ export abstract class ApiClient<
 
   protected request(
     config: RequestConfig<UriParams, QueryParams> = {},
-    extraConfig: AxiosRequestConfig = {},
+    axiosConfig: AxiosRequestConfig = {},
   ) {
-    if (config.cancelPreviousCall && this.cancelTokenSource) {
+    if (this.cancelTokenSource) {
       this.cancelTokenSource.cancel()
     }
-
+    console.log('requested', this.cancelTokenSource)
     this.cancelTokenSource = axiosStatic.CancelToken.source()
 
     return this.axios.request({
@@ -60,7 +59,7 @@ export abstract class ApiClient<
       data: config.data,
       cancelToken: this.cancelTokenSource.token,
       ...this.localConfig,
-      ...extraConfig,
+      ...axiosConfig,
     })
   }
 

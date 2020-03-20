@@ -1,5 +1,5 @@
-import ApiClient from '../plugins/api-client'
-import UnexpectedError from '../app/errors/unexpected-error'
+import { ApiClient } from '@/plugins/api-client'
+import { AppError } from '@/app/errors/app-error'
 
 export default class extends ApiClient {
   get uri() {
@@ -14,7 +14,7 @@ export default class extends ApiClient {
     try {
       return await this.$request()
     } catch (error) {
-      throw new UnexpectedError(error)
+      throw new AppError(error)
     }
   }
 }

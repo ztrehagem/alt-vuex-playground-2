@@ -1,10 +1,11 @@
-import { ApiClient } from '../lib/api-client'
-import axios from './axios'
+import * as lib from '@/lib/api-client'
+export { isCancel } from '@/lib/api-client'
+import axios from '@/plugins/axios'
 
-export default abstract class<
+export abstract class ApiClient<
   UriParams extends Record<string, any> = never,
   QueryParams extends Record<string, any> = never
-> extends ApiClient<UriParams, QueryParams> {
+> extends lib.ApiClient<UriParams, QueryParams> {
   constructor() {
     super(axios)
   }

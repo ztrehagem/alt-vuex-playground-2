@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import AppError from './app-error'
+import { AppError } from './app-error'
 
 type StringKeyof<T> = { [K in keyof T]: K }[keyof T] & string
 
@@ -13,8 +13,12 @@ export interface Validation<Context> {
   message: string
 }
 
-export default class ValidationError<Prop extends string> extends AppError {
+export class ValidationError<Prop extends string> extends AppError {
   errors?: ValidationErrorMessages<Prop>
+
+  get isExpected() {
+    return true
+  }
 
   static fromApiResponse(error: AxiosError) {
     const ve = new ValidationError(error)

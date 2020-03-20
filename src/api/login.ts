@@ -1,9 +1,10 @@
-import ApiClient from '../plugins/api-client'
-import ValidationError, {
+import { ApiClient } from '../plugins/api-client'
+import {
+  ValidationError,
   Validator,
   Validation,
 } from '../app/errors/validation-error'
-import UnexpectedError from '../app/errors/unexpected-error'
+import { AppError } from '@/app/errors/app-error'
 
 interface Payload {
   email: string
@@ -54,7 +55,7 @@ export default class extends ApiClient {
         case 400:
           throw ValidationError.fromApiResponse(error)
         default:
-          throw new UnexpectedError(error)
+          throw new AppError(error)
       }
     }
   }
