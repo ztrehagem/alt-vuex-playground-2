@@ -16,9 +16,9 @@ export default class extends ApiClient {
     return 'post' as const
   }
 
-  execute(payload: Payload) {
+  async execute(payload: Payload) {
     try {
-      return this.$request({ data: payload })
+      return await this.$request({ data: payload })
     } catch (error) {
       switch (error?.response?.status) {
         case 400:

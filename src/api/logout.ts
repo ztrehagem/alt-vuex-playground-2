@@ -10,9 +10,9 @@ export default class extends ApiClient {
     return 'delete' as const
   }
 
-  execute() {
+  async execute() {
     try {
-      return this.$request()
+      return await this.$request()
     } catch (error) {
       throw new UnexpectedError(error)
     }

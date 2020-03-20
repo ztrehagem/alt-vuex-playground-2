@@ -43,14 +43,13 @@ export default class extends ApiClient {
     return this.validator.validate(payload)
   }
 
-  execute(payload: Payload) {
+  async execute(payload: Payload) {
     const error = this.validate(payload)
     if (error) throw error
 
     try {
-      return this.$request({ data: payload })
+      return await this.$request({ data: payload })
     } catch (error) {
-      console.log('request error', error?.response)
       switch (error?.response?.status) {
         case 400:
           throw ValidationError.fromApiResponse(error)
