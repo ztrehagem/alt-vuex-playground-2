@@ -3,9 +3,9 @@ import AppError from './app-error'
 
 type StringKeyof<T> = { [K in keyof T]: K }[keyof T] & string
 
-export type ValidationErrorMessages<Keys extends string> = Partial<
-  Record<Keys, string[]>
-> //{ [Key in Keys]: string[] }  //Record<Keys, string[]>
+export type ValidationErrorMessages<Prop extends string> = Partial<
+  Record<Prop, string[]>
+>
 
 export interface Validation<Context> {
   prop: StringKeyof<Context>
@@ -13,8 +13,8 @@ export interface Validation<Context> {
   message: string
 }
 
-export default class ValidationError<Keys extends string> extends AppError {
-  errors?: ValidationErrorMessages<Keys>
+export default class ValidationError<Prop extends string> extends AppError {
+  errors?: ValidationErrorMessages<Prop>
 
   static fromApiResponse(error: AxiosError) {
     const ve = new ValidationError(error)
@@ -23,13 +23,10 @@ export default class ValidationError<Keys extends string> extends AppError {
   }
 }
 
-export class ValidationErrorBuilder<Keys extends string> {
-  errors: ValidationErrorMessages<Keys> = {}
+export class ValidationErrorBuilder<Prop extends string> {
+  errors: ValidationErrorMessages<Prop> = {}
 
-  try(prop: Keys, validate: () => boolean, message: string) {
-    const result = validate()
-    if (!result) return
-
+  add(prop: Prop, message: string) {
     this.errors[prop] = this.errors[prop]?.concat([message]) || [message]
   }
 
@@ -40,7 +37,7 @@ export class ValidationErrorBuilder<Keys extends string> {
   toError() {
     if (!this.hasErrors) return
 
-    const error = new ValidationError<Keys>()
+    const error = new ValidationError<Prop>()
     error.errors = this.errors
     return error
   }
@@ -59,9 +56,9 @@ export class Validator<Context extends Record<string, any>> {
 
   validate(context: Context) {
     const builder = new ValidationErrorBuilder<StringKeyof<Context>>()
-    this.collection.forEach(({ prop, validate, message }) => {
-      builder.try(prop, () => validate(context), message)
-    })
+    this.collection
+      .filter(({ validate }) => !validate(context))
+      .forEach(({ prop, message }) => builder.add(prop, message))
     return builder.toError()
   }
 }

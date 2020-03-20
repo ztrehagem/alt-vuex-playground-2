@@ -2,19 +2,19 @@
 div
   h1 App
   hr
-  Foo
+  Counter
   hr
   Session
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Foo from '@/components/Foo.vue'
+import Counter from '@/components/Counter.vue'
 import Session from '@/components/Session.vue'
 
 export default Vue.extend({
   components: {
-    Foo,
+    Counter,
     Session,
   },
 })

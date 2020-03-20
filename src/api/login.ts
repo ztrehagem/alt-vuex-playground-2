@@ -13,23 +13,23 @@ interface Payload {
 const validations: Validation<Payload>[] = [
   {
     prop: 'email',
-    validate: ({ email }) => !email,
+    validate: ({ email }) => !!email,
     message: 'REQUIRED',
   },
   {
     prop: 'email',
-    validate: ({ email }) => !email.match(/^[^@]+@[^@]+$/),
+    validate: ({ email }) => !!email.match(/^[^@]+@[^@]+$/),
     message: 'INVALID_FORMAT',
   },
   {
     prop: 'password',
-    validate: ({ password }) => !password,
+    validate: ({ password }) => !!password,
     message: 'REQUIRED',
   },
 ]
 
 export default class extends ApiClient {
-  protected validator = new Validator<Payload>(validations)
+  protected validator = new Validator(validations)
 
   get uri() {
     return '/session'

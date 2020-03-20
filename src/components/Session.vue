@@ -34,7 +34,7 @@ export default Vue.extend({
       try {
         await this.$store.session.actions.login(this.email, this.password)
       } catch (error) {
-        console.warn(error)
+        console.warn(error?.errors)
       }
     },
 
@@ -42,7 +42,7 @@ export default Vue.extend({
       try {
         await this.$store.session.actions.logout()
       } catch (error) {
-        console.warn(error)
+        console.warn(error?.errors)
       }
     },
   },

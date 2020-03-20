@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  h2 Foo
+  h2 Counter
   div count: {{ count }}
   div
     button(@click="increment") increment
