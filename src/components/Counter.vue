@@ -26,15 +26,15 @@ export default Vue.extend({
 
   methods: {
     increment() {
-      this.$store.counter.actions.increment()
+      this.$store.counter.increment()
     },
 
     decrement() {
-      this.$store.counter.actions.decrement()
+      this.$store.counter.decrement()
     },
 
     add() {
-      this.$store.counter.actions.add(Number(this.input))
+      this.$store.counter.add(Number(this.input))
     },
   },
 })

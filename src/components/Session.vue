@@ -32,7 +32,7 @@ export default Vue.extend({
   methods: {
     async login() {
       try {
-        await this.$store.session.actions.login(this.email, this.password)
+        await this.$store.session.login(this.email, this.password)
       } catch (error) {
         console.warn(error?.errors)
       }
@@ -40,7 +40,7 @@ export default Vue.extend({
 
     async logout() {
       try {
-        await this.$store.session.actions.logout()
+        await this.$store.session.logout()
       } catch (error) {
         console.warn(error?.errors)
       }

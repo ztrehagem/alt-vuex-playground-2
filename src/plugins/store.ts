@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as store from '@/store'
+import * as store from '@/store2'
 
 Vue.prototype.$store = store
 
