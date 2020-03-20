@@ -35,7 +35,7 @@ export class ValidationErrorBuilder<Prop extends string> {
   }
 
   toError() {
-    if (!this.hasErrors) return
+    if (!this.hasErrors) return null
 
     const error = new ValidationError<Prop>()
     error.errors = this.errors
